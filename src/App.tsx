@@ -18,7 +18,7 @@ function App() {
       <Header></Header>
       <div className='flex-1 flex'>
         <Aside active={hash}></Aside>
-        <MainContent></MainContent>
+        <MainContent active={hash}></MainContent>
       </div>
     </div>
   )

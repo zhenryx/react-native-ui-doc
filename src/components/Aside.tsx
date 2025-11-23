@@ -5,7 +5,7 @@ const menuItems = [
     title: 'Getting Start',
     children: [
       { id: 'Introduction', title: '介绍', path: '#guild/intro' },
-      { id: 'Installation', title: '安装', path: '#guild/start' }
+      { id: 'QuicklyStart', title: '快速开始', path: '#guild/start' }
     ]
   },
   {

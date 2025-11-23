@@ -12,11 +12,7 @@ export const useDarkTheme = () => {
     }
   }, [isDark])
   const toggle = () => {
-    console.log('切换前 isDark:', isDark)
-    setIsDark(prev => {
-      console.log('切换后 isDark:', !prev)
-      return !prev
-    })
+    setIsDark(prev => !prev)
   }
   return { isDark, toggle }
 }
