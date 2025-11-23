@@ -4,12 +4,15 @@
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
   --text-primary: #111827;
+  --text-active: #2563eb;
+  --bg-active: #eff6ff;
 }
 
 .dark {
   --bg-primary: #121212;
   --bg-secondary: #1E1E1E;
   --text-primary: #f9fafb;
+  --text-active: #60a5fa;
 }
 
 *,
