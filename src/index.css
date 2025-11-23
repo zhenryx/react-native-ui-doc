@@ -1,10 +1,24 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #111827;
+}
+
+.dark {
+  --bg-primary: #121212;
+  --bg-secondary: #1E1E1E;
+  --text-primary: #f9fafb;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
+
 body {
   margin: 0px;
-  background-color: rgb(251, 251, 251);
+  background-color: var(--bg-secondary);
 }

@@ -1,26 +1,33 @@
-import githubSvg from '@assets/Header/GitHub.svg'
+import githubLightSvg from '@assets/Header/github-light.svg'
+import githubDarkSvg from '@assets/Header/github-dark.svg'
 import likeSvg from '@assets/Header/like.svg'
 import darkSvg from '@assets/Header/dark.svg'
+import lightSvg from '@assets/Header/light.svg'
 import { Brand } from './other/Brand'
+import { useDarkTheme } from '../hooks/useDarkTheme'
+import { useMemo } from 'react'
 export const Header = () => {
-  const toGitHub = [
-    { id: 1, name: 'like', src: likeSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
-    { id: 2, name: 'github', src: githubSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
-  ]
+  const { isDark, toggle } = useDarkTheme()
+  const toGitHub = useMemo(
+    () => [
+      { id: 1, name: 'like', src: likeSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
+      { id: 2, name: 'github', src: isDark ? githubDarkSvg : githubLightSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
+    ], [isDark]
+  )
   return (
-    <div className='sticky left-0 right-0 flex px-4 h-16 top-4 items-center bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)] justify-between'>
-      <div className=''>
+    <div className='sticky left-0 right-0 flex px-4 h-16 top-4 items-center bg-(--bg-primary) shadow-[0_4px_12px_rgba(0,0,0,0.1)] justify-between'>
+      <div>
         <Brand />
       </div>
       <menu className='flex gap-4'>
         {toGitHub.map(item => (
-          <a href={item.link} target='_blank'>
+          <a href={item.link} target='_blank' key={item.id}>
             <li>
               <img src={item.src} alt={item.name} className="h-6 w-6" />
             </li>
           </a>
         ))}
-        <img src={darkSvg} alt="" className="h-6 w-6"/>
+        <img src={isDark ? darkSvg : lightSvg} alt="" className="h-6 w-6" onClick={toggle} />
       </menu>
     </div>
   )

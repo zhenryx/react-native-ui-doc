@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className='h-screen flex flex-col'>
-      <p className='text-[0.8rem] text-center'>If you like my React Native components, give it a star on GitHub! ⭐ </p>
+      <p className='text-[0.8rem] text-center text-(--text-primary)'>If you like my React Native components, give it a star on GitHub! ⭐ </p>
       <Header></Header>
       <div className='flex-1 flex'>
         <Aside></Aside>
