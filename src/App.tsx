@@ -5,13 +5,16 @@ import { Aside } from './components/Aside'
 import { MainContent } from './components/MainContent'
 import { useEffect, useState } from 'react'
 function App() {
-  const [hash,setHash]=useState('#guild/intro')
-  useEffect(()=>{
-    window.addEventListener('hashchange',()=>{
+  const [hash, setHash] = useState(() => location.hash || '#guild/intro')
+  useEffect(() => {
+    const handleHashChange = () => {
       setHash(location.hash)
     }
-    )
-  })
+    window.addEventListener('hashchange', handleHashChange)
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
+  }, [])
   return (
     <div className='h-screen flex flex-col overflow-y-scroll'>
       <p className='text-[0.8rem] text-center text-(--text-primary)'>If you like my React Native components, give it a star on GitHub! ⭐ </p>

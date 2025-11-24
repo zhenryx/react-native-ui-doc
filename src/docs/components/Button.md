@@ -10,7 +10,8 @@ npm install @zhenryx/react-native-ui
 
 ## 基础用法
 
-```tsx
+```snack:5f4737
+
 import { Button } from '@zhenryx/react-native-ui';
 
 // 基础按钮（使用主题色）
