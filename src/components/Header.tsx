@@ -15,7 +15,7 @@ export const Header = () => {
     ], [isDark]
   )
   return (
-    <div className='sticky left-0 right-0 flex px-4 h-16 top-4 items-center bg-(--bg-primary) shadow-[0_4px_12px_rgba(0,0,0,0.1)] justify-between'>
+    <div className='sticky top-0 left-0 right-0 flex px-4 py-10 h-16 items-center bg-(--bg-primary) shadow-[0_4px_12px_rgba(0,0,0,0.1)] justify-between'>
       <div>
         <Brand />
       </div>

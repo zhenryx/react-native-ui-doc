@@ -1,18 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext } from 'react'
+import { ThemeContext } from '../contexts/themeContext'
+
 export const useDarkTheme = () => {
-  const [isDark, setIsDark] = useState(false)
-  useEffect(() => {
-    const root = document.documentElement
-    if (isDark) {
-      root.classList.add('dark')
-      console.log('暗黑模式已启用，html class:', root.className)
-    } else {
-      root.classList.remove('dark')
-      console.log('浅色模式已启用，html class:', root.className)
-    }
-  }, [isDark])
-  const toggle = () => {
-    setIsDark(prev => !prev)
+  const context = useContext(ThemeContext)
+  if (context === undefined) {
+    throw new Error('useDarkTheme must be used within a ThemeProvider')
   }
-  return { isDark, toggle }
+  return context
 }
