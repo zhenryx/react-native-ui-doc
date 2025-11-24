@@ -8,7 +8,7 @@ export const MainContent: React.FC<{ active: string }> = ({ active }) => {
   }
   
   return (
-    <div className='flex-1'>
+    <div className='flex-1 px-10 py-5'>
       {contentMap[active]}
     </div>
   )
