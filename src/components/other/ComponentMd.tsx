@@ -12,16 +12,8 @@ const mdModules = import.meta.glob('/src/docs/**/*.md', {
 })
 
 // 路径映射：将路由路径转换为文档路径
-const pathToDocMap: Record<string, string> = {
-  '#guild/start': '/src/docs/Installation.md',
-  '#guild/intro': '/src/docs/Installation.md',
-  '#components/button': '/src/docs/components/Button.md',
-  '#components/empty': '/src/docs/components/Empty.md',
-  '#components/overlay': '/src/docs/components/Overlay.md',
-  '#components/dialog': '/src/docs/components/Dialog.md',
-  '#components/popup': '/src/docs/components/Popup.md',
-  '#components/loading': '/src/docs/components/Loading.md',
-}
+// 例如'#guild/start': '/src/docs/Installation.md',
+const pathToDocMap: Record<string, string> = {}
 
 interface ComponentMdProps {
   path: string
