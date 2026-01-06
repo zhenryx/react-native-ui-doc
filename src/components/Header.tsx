@@ -10,8 +10,8 @@ export const Header = () => {
   const { isDark, toggle } = useDarkTheme()
   const toGitHub = useMemo(
     () => [
-      { id: 1, name: 'like', src: likeSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
-      { id: 2, name: 'github', src: isDark ? githubDarkSvg : githubLightSvg, link: 'https://github.com/zhenryx/react-native-ui-doc' },
+      { id: 1, name: 'like', src: likeSvg, link: 'https://github.com/zhenryx/react-native-components' },
+      { id: 2, name: 'github', src: isDark ? githubDarkSvg : githubLightSvg, link: 'https://github.com/zhenryx/react-native-components' },
     ], [isDark]
   )
   return (

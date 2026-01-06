@@ -18,10 +18,10 @@ function App() {
     }
   }, [])
   return (
-    <div className='h-screen flex flex-col'>
-      <p className='text-[0.8rem] text-center text-(--text-primary)'>If you like my React Native components, give it a star on GitHub! ⭐ </p>
+    <div className='h-screen flex flex-col overflow-hidden'>
+      <p className='text-[0.8rem] text-center text-(--text-primary) flex-shrink-0'>If you like my React Native components, give it a star on GitHub! ⭐ </p>
       <Header></Header>
-      <div className='flex'>
+      <div className='flex-1 flex overflow-hidden'>
         <Aside active={hash}></Aside>
         <MainContent active={hash}></MainContent>
       </div>

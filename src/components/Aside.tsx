@@ -70,7 +70,7 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
     return active === href
   }
   return (
-    <div className='border-r border-r-gray-400 w-60 h-full'>
+    <div className='border-r border-r-gray-400 w-60 h-full overflow-y-auto'>
       <ul className="p-4">
         {menu.map(item => (
           <li key={item.id}>
