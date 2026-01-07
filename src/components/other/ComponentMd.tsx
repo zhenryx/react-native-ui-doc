@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import Markdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -11,6 +11,73 @@ const mdModules = import.meta.glob('/src/docs/**/*.md', {
   query: '?raw',
   import: 'default'
 })
+
+/**
+ * 交互式代码块组件
+ * 可展开/隐藏代码
+ */
+const InteractiveCodeBlock: React.FC<{
+  code: string
+  language: string
+  isDark: boolean
+}> = ({ code, language, isDark }) => {
+  const [showCode, setShowCode] = useState(false)
+
+  return (
+    <div className="my-6 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+      {/* 预览区域 */}
+      <div className="bg-white dark:bg-gray-800 p-6 relative">
+        <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          预览
+        </div>
+        <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded border border-gray-200 dark:border-gray-700">
+          <pre className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+            {code}
+          </pre>
+        </div>
+        
+        {/* 展开/隐藏代码按钮 */}
+        <button
+          onClick={() => setShowCode(!showCode)}
+          className="absolute bottom-4 right-4 flex items-center gap-2 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors"
+        >
+          <svg 
+            className="w-4 h-4" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" 
+            />
+          </svg>
+          {showCode ? 'Hide Code' : 'Show Code'}
+        </button>
+      </div>
+
+      {/* 代码区域 */}
+      {showCode && (
+        <div className="border-t border-gray-200 dark:border-gray-700">
+          <SyntaxHighlighter
+            language={language}
+            style={isDark ? funky : solarizedlight}
+            customStyle={{
+              margin: 0,
+              borderRadius: 0,
+              fontSize: '0.875rem',
+              lineHeight: 1.5,
+            }}
+          >
+            {code}
+          </SyntaxHighlighter>
+        </div>
+      )}
+    </div>
+  )
+}
 
 /**
  * 将路由路径转换为本地文档路径
@@ -88,22 +155,38 @@ export const ComponentMd: React.FC<ComponentMdProps> = ({ path }) => {
     code: (props: any) => {
       const { children, className, ...rest } = props
       const match = /language-(\w+)/.exec(className || '')
-      return match ? (
-        <SyntaxHighlighter
-          {...rest}
-          PreTag="div"
-          children={String(children).replace(/\n$/, '')}
-          language={match[1]}
-          style={isDark ? funky : solarizedlight}
-          customStyle={{
-            padding: 8,
-            borderRadius: '0.5rem',
-            fontSize: 12,
-            lineHeight: 1.5,
-            backgroundColor: isDark ? 'black' : '#fff',
-          }}
-        />
-      ) : (
+      
+      // 如果是代码块（有语言标识）
+      if (match) {
+        const code = String(children).replace(/\n$/, '')
+        const language = match[1]
+        
+        // 只对 tsx/jsx 代码块启用预览功能
+        if (language === 'tsx' || language === 'jsx') {
+          return <InteractiveCodeBlock code={code} language={language} isDark={isDark} />
+        }
+        
+        // 其他语言只显示代码
+        return (
+          <SyntaxHighlighter
+            {...rest}
+            PreTag="div"
+            children={code}
+            language={language}
+            style={isDark ? funky : solarizedlight}
+            customStyle={{
+              padding: 8,
+              borderRadius: '0.5rem',
+              fontSize: 12,
+              lineHeight: 1.5,
+              backgroundColor: isDark ? 'black' : '#fff',
+            }}
+          />
+        )
+      }
+      
+      // 行内代码
+      return (
         <code {...rest} className={className}>
           {children}
         </code>
