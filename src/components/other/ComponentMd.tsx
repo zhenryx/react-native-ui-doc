@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { funky, solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useDarkTheme } from '../../hooks/useDarkTheme'
-import { getFileContent, pathToFileName } from '../../api/gitee'
+import { getLocalFileContent, pathToFileName } from '../../api/localFiles'
 
 interface ComponentMdProps {
   path: string
@@ -22,7 +22,7 @@ export const ComponentMd: React.FC<ComponentMdProps> = ({ path }) => {
         setLoading(true)
         setError(null)
         const fileName = pathToFileName(path)
-        const text = await getFileContent(fileName)
+        const text = await getLocalFileContent(fileName)
         setContent(text)
       } catch (err) {
         setError(err instanceof Error ? err.message : '加载文档失败')
@@ -83,20 +83,20 @@ export const ComponentMd: React.FC<ComponentMdProps> = ({ path }) => {
         const language = match[1]
         
         return (
-          <SyntaxHighlighter
-            {...rest}
-            PreTag="div"
+        <SyntaxHighlighter
+          {...rest}
+          PreTag="div"
             children={code}
             language={language}
-            style={isDark ? funky : solarizedlight}
-            customStyle={{
+          style={isDark ? funky : solarizedlight}
+          customStyle={{
               padding: 8,
-              borderRadius: '0.5rem',
-              fontSize: 12,
-              lineHeight: 1.5,
-              backgroundColor: isDark ? 'black' : '#fff',
-            }}
-          />
+            borderRadius: '0.5rem',
+            fontSize: 12,
+            lineHeight: 1.5,
+            backgroundColor: isDark ? 'black' : '#fff',
+          }}
+        />
         )
       }
       

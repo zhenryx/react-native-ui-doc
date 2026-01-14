@@ -16,4 +16,9 @@ export default defineConfig({
   optimizeDeps: {
     include: ['react-native-web'],
   },
+  // 确保 markdown 文件被识别为资源（放在顶层，不在 build 内）
+  assetsInclude: ['**/*.md'],
+  build: {
+    // 使用默认的资源处理方式，import.meta.glob 会自动处理文件打包
+  },
 })

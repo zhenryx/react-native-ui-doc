@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { getLocalFileList } from '../api/localFiles'
 
 // 定义类型
 interface MenuItem {
@@ -18,22 +19,21 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const loadMenu = async () => {
+    const loadMenu = () => {
       try {
-        const { getFileList } = await import('../api/gitee')
-        const files = await getFileList()
+        const files = getLocalFileList()
         
-        // 过滤出组件文档（.md 文件，排除 README.md）
+        // 过滤出目录（组件文件夹）
         const componentFiles: MenuItem[] = files
-          .filter((file: any) => file.type === 'file' && file.name.endsWith('.md') && file.name !== 'README.md')
-          .map((file: any) => {
-            // 从文件名提取组件名，例如 'Button.md' -> 'Button'
-            const fileName = file.name.replace('.md', '')
-            // 文件名转小写作为 id，例如 'Button' -> 'button'
-            const id = fileName.charAt(0).toLowerCase() + fileName.slice(1)
+          .filter((file) => file.type === 'dir')
+          .map((file) => {
+            // 目录名作为组件名，例如 'Button' -> 'Button'
+            const dirName = file.name
+            // 目录名转小写作为 id，例如 'Button' -> 'button'
+            const id = dirName.charAt(0).toLowerCase() + dirName.slice(1)
             return {
               id,
-              title: fileName,
+              title: dirName,
               path: `#components/${id}`
             }
           })
@@ -51,7 +51,12 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
             id: 'components',
             title: 'Components',
             children: componentFiles
-          }
+          },
+          // {
+          //   id: 'special-components',
+          //   title: 'Special Components',
+          //   children: componentFiles
+          // }
         ])
       } catch (error) {
         console.error('加载菜单失败:', error)
@@ -69,34 +74,34 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
 
   if (loading) {
     return (
-      <div className='border-r border-r-gray-400 w-60 h-full overflow-y-auto'>
+      <div className='border-r border-r-gray-400 flex-[0_0_15%] min-w-[200px] max-w-[300px] h-full overflow-y-auto'>
         <div className="p-4 text-gray-500">加载中...</div>
       </div>
     )
   }
 
   return (
-    <div className='border-r border-r-gray-400 w-60 h-full overflow-y-auto'>
+    <div className='border-r border-r-gray-400 flex-[0_0_15%] min-w-[200px] max-w-[300px] h-full overflow-y-auto'>
       <ul className="p-4">
         {menu.map(item => (
           <li key={item.id}>
             <span className="text-[#999]">{item.title}</span>
             {item.children && item.children.length > 0 && (
-              <ul className="pl-4">
-                {item.children.map(child => (
-                  <li key={child.id}>
-                    <a
-                      href={child.path}
-                      className={`text-sm block px-2 py-1 rounded ${isActive(child.path)
-                        ? 'text-(--text-active) bg-(--bg-active) font-medium'
-                        : 'text-(--text-primary) hover:bg-(--bg-primary)'
-                        }`}
-                    >
-                      {child.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+            <ul className="pl-4">
+              {item.children.map(child => (
+                <li key={child.id}>
+                  <a
+                    href={child.path}
+                    className={`text-sm block px-2 py-1 rounded ${isActive(child.path)
+                      ? 'text-(--text-active) bg-(--bg-active) font-medium'
+                      : 'text-(--text-primary) hover:bg-(--bg-primary)'
+                      }`}
+                  >
+                    {child.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
             )}
           </li>
         ))}
