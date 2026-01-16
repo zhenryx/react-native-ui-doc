@@ -39,6 +39,11 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
           })
           .sort((a: MenuItem, b: MenuItem) => a.title.localeCompare(b.title))
         
+        // Special Components 列表
+        const specialComponents: MenuItem[] = [
+          { id: 'scrollView', title: 'ScrollView', path: '#special-components/scrollView' }
+        ]
+        
         setMenu([
           {
             id: 'guild',
@@ -52,11 +57,11 @@ export const Aside: React.FC<{ active: string }> = ({ active }) => {
             title: 'Components',
             children: componentFiles
           },
-          // {
-          //   id: 'special-components',
-          //   title: 'Special Components',
-          //   children: componentFiles
-          // }
+          {
+            id: 'special-components',
+            title: 'Special Components',
+            children: specialComponents
+          }
         ])
       } catch (error) {
         console.error('加载菜单失败:', error)

@@ -31,8 +31,8 @@ if (import.meta.env.DEV) {
 
 /**
  * 将路由路径转换为文件路径
- * @param hashPath 路由路径，例如 '#guild/start' 或 '#components/button'
- * @returns 文件路径，例如 'README.md' 或 'Button/Button.md'
+ * @param hashPath 路由路径，例如 '#guild/start' 或 '#components/button' 或 '#special-components/scrollView'
+ * @returns 文件路径，例如 'README.md' 或 'Button/Button.md' 或 'ScrollView/ScrollView.md'
  */
 export function pathToFileName(hashPath: string): string {
   const path = hashPath.replace(/^#/, '')
@@ -44,33 +44,53 @@ export function pathToFileName(hashPath: string): string {
   
   // 组件文档：从路径最后一部分生成目录名和文件名
   // 例如 'components/button' -> 'Button/Button.md'
+  // 例如 'special-components/scrollView' -> 'ScrollView/ScrollView.md'
   const parts = path.split('/')
   const lastPart = parts[parts.length - 1]
-  // 首字母大写，例如 'button' -> 'Button'
+  // 首字母大写，例如 'button' -> 'Button', 'scrollView' -> 'ScrollView'
   const dirName = lastPart.charAt(0).toUpperCase() + lastPart.slice(1)
   return `${dirName}/${dirName}.md`
 }
 
 /**
- * 将路由路径转换为图片路径
+ * 将路由路径转换为图片路径（单个图片）
  * @param hashPath 路由路径，例如 '#components/button'
- * @returns 图片路径，例如 'Button/Button.png'
+ * @returns 图片路径，例如 'Button/Button.png'，如果没有则返回空字符串
  */
 export function pathToImagePath(hashPath: string): string {
+  const paths = pathToImagePaths(hashPath)
+  return paths.length > 0 ? paths[0] : ''
+}
+
+/**
+ * 将路由路径转换为图片路径数组（支持多个图片）
+ * @param hashPath 路由路径，例如 '#components/button' 或 '#special-components/scrollView'
+ * @returns 图片路径数组，例如 ['Button/Button.png'] 或 ['ScrollView/IndicatorScrollView.gif', 'ScrollView/PaginatedIndicatorScrollView.gif']
+ */
+export function pathToImagePaths(hashPath: string): string[] {
   const path = hashPath.replace(/^#/, '')
   
   // 快速开始页面没有图片
   if (path === 'guild/start' || path === 'guild/intro') {
-    return ''
+    return []
   }
   
-  // 组件文档：从路径最后一部分生成目录名和图片文件名
-  // 例如 'components/button' -> 'Button/Button.png'
+  // 组件文档：从路径最后一部分生成目录名
   const parts = path.split('/')
   const lastPart = parts[parts.length - 1]
-  // 首字母大写，例如 'button' -> 'Button'
+  // 首字母大写，例如 'button' -> 'Button', 'scrollView' -> 'ScrollView'
   const dirName = lastPart.charAt(0).toUpperCase() + lastPart.slice(1)
-  return `${dirName}/${dirName}.png`
+  
+  // 特殊处理：ScrollView 有多个图片
+  if (dirName === 'ScrollView') {
+    return [
+      `${dirName}/IndicatorScrollView.gif`,
+      `${dirName}/PaginatedIndicatorScrollView.gif`
+    ]
+  }
+  
+  // 其他组件默认使用 {ComponentName}/{ComponentName}.png
+  return [`${dirName}/${dirName}.png`]
 }
 
 /**

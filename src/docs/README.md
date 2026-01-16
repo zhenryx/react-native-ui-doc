@@ -1,4 +1,4 @@
- # @zhenryx/react-native-components
+# @zhenryx/react-native-components
 
 一个 React Native UI 组件库。
 
